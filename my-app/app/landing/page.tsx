@@ -158,13 +158,16 @@ export default function MobileMain() {
           setCard2Seen(true)
           timer = setTimeout(() => setCard2Expanded(true), 500)
         } else {
-          // 스크롤 올릴 때: Card1 리셋, Card2 peek으로 collapse
           clearTimeout(timer)
-          setCard1Visible(false)
+          // 스크롤 올릴 때: Card2만 peek으로 collapse, Card1 유지
           setCard2Expanded(false)
+          // 섹션이 완전히 벗어났을 때만 Card1 리셋 (re-entry 재생)
+          if (entry.intersectionRatio === 0) {
+            setCard1Visible(false)
+          }
         }
       },
-      { threshold: 0.15 }
+      { threshold: [0, 0.15] }
     )
     observer.observe(el)
     return () => {
@@ -324,7 +327,7 @@ export default function MobileMain() {
       {/* Card1(622px) + Card2 top 197px → 전체 721px */}
       <div
         ref={section4Ref}
-        className="relative w-[375px] -mt-[40px] z-10 overflow-hidden"
+        className="relative w-[375px] -mt-[40px] z-10 overflow-hidden bg-white"
         style={{ height: "721px" }}
       >
         {/* Card 1: 로봇 SI 솔루션 — 60% 아래에서 은은하게 슬라이드 */}
