@@ -48,19 +48,9 @@ const accordionItems: AccordionItem[] = [
 
 function Footer() {
   return (
-    <div className="bg-[#181818] overflow-clip relative w-[375px]">
-      {/* Logo */}
-      <div className="h-[24px] left-[20px] overflow-clip relative mt-[660px] mx-[20px] w-[130px]">
-        <div className="absolute inset-[17.12%_0.1%_1%_18.87%]">
-          <img alt="" className="absolute block max-w-none size-full" src={imgGroup} />
-        </div>
-        <div className="absolute inset-[0.98%_86.88%_4.55%_-0.03%]">
-          <img alt="" className="absolute block max-w-none size-full" src={imgGroup1} />
-        </div>
-      </div>
-
+    <div className="bg-[#181818] w-[375px] px-[20px] pt-[60px] pb-[0px]">
       {/* Menu */}
-      <div className="flex flex-col gap-[16px] items-start mx-[20px] mt-[80px] w-[335px]">
+      <div className="flex flex-col gap-[16px] items-start w-full">
         {/* Home */}
         <div className="flex flex-col gap-[10px] items-start w-full">
           <div className="flex items-center justify-between w-full">
@@ -126,13 +116,22 @@ function Footer() {
       </div>
 
       {/* Description */}
-      <div className="font-['Pretendard',sans-serif] leading-normal mx-[20px] mt-[40px] text-[15px] text-[#b0b0b0] w-[335px]">
-        <p className="mb-0">We provide standardized and customizable robotic automation systems that enhance productivity, efficiency, and reliability</p>
-        <p>in manufacturing environments.</p>
+      <div className="font-['Pretendard',sans-serif] leading-normal mt-[40px] text-[15px] text-[#b0b0b0]">
+        <p className="mb-0">We provide standardized and customizable robotic automation systems that enhance productivity, efficiency, and reliability in manufacturing environments.</p>
       </div>
 
-      {/* Copyright */}
-      <p className="font-['Pretendard',sans-serif] leading-[20px] text-[12px] text-[#b0b0b0] text-center py-[20px] mt-[20px]">
+      {/* Logo */}
+      <div className="h-[24px] overflow-clip relative w-[130px] mt-[40px]">
+        <div className="absolute inset-[17.12%_0.1%_1%_18.87%]">
+          <img alt="" className="absolute block max-w-none size-full" src={imgGroup} />
+        </div>
+        <div className="absolute inset-[0.98%_86.88%_4.55%_-0.03%]">
+          <img alt="" className="absolute block max-w-none size-full" src={imgGroup1} />
+        </div>
+      </div>
+
+      {/* Copyright — 좌측 정렬 */}
+      <p className="font-['Pretendard',sans-serif] leading-[20px] text-[12px] text-[#b0b0b0] py-[20px] mt-[8px]">
         Copyright © 2025. ROBOTEGRA. All rights reserved.
       </p>
     </div>
@@ -142,36 +141,59 @@ function Footer() {
 export default function MobileMain() {
   const [activeAccordion, setActiveAccordion] = useState(0)
   const section4Ref = useRef<HTMLDivElement>(null)
+  const solScrollRef = useRef<HTMLDivElement>(null)
+  const [solProgress, setSolProgress] = useState(0)
+  const [pageScroll, setPageScroll] = useState(0)
+
+  useEffect(() => {
+    const el = solScrollRef.current
+    if (!el) return
+    const onScroll = () => setSolProgress(el.scrollLeft / (el.scrollWidth - el.clientWidth))
+    el.addEventListener("scroll", onScroll, { passive: true })
+    return () => el.removeEventListener("scroll", onScroll)
+  }, [])
+
+  useEffect(() => {
+    const onPageScroll = () => {
+      const total = document.documentElement.scrollHeight - window.innerHeight
+      setPageScroll(total > 0 ? window.scrollY / total : 0)
+    }
+    window.addEventListener("scroll", onPageScroll, { passive: true })
+    return () => window.removeEventListener("scroll", onPageScroll)
+  }, [])
   const [card1Visible, setCard1Visible] = useState(false)
   const [card2Expanded, setCard2Expanded] = useState(false)
   const [card2Seen, setCard2Seen] = useState(false)
 
   useEffect(() => {
-    const el = section4Ref.current
-    if (!el) return
     let timer: ReturnType<typeof setTimeout>
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          // 스크롤 내릴 때: Card1 슬라이드인, Card2 expand
-          setCard1Visible(true)
-          setCard2Seen(true)
-          timer = setTimeout(() => setCard2Expanded(true), 500)
-        } else {
-          clearTimeout(timer)
-          // 스크롤 올릴 때: Card2만 peek으로 collapse, Card1 유지
-          setCard2Expanded(false)
-          // 섹션이 완전히 벗어났을 때만 Card1 리셋 (re-entry 재생)
-          if (entry.intersectionRatio === 0) {
-            setCard1Visible(false)
-          }
-        }
-      },
-      { threshold: [0, 0.15] }
-    )
-    observer.observe(el)
+    let prevIn = false
+
+    const check = () => {
+      const el = section4Ref.current
+      if (!el) return
+      const rect = el.getBoundingClientRect()
+      const vh = window.innerHeight
+      const inView = rect.top < vh * 0.85 && rect.bottom > 0
+
+      if (inView && !prevIn) {
+        prevIn = true
+        setCard1Visible(true)
+        setCard2Seen(true)
+        timer = setTimeout(() => setCard2Expanded(true), 500)
+      } else if (!inView && prevIn) {
+        prevIn = false
+        clearTimeout(timer)
+        setCard2Expanded(false)
+        // 아래 방향으로 완전히 벗어났을 때만 Card1 리셋
+        if (rect.top >= vh) setCard1Visible(false)
+      }
+    }
+
+    window.addEventListener("scroll", check, { passive: true })
+    check()
     return () => {
-      observer.disconnect()
+      window.removeEventListener("scroll", check)
       clearTimeout(timer)
     }
   }, [])
@@ -199,9 +221,15 @@ export default function MobileMain() {
         </div>
       </div>
 
-      {/* Left border line */}
-      <div className="absolute left-0 top-[60px] w-[2px] h-full bg-[#cfcfcf]" />
-      <div className="absolute left-0 top-[785px] w-[2px] h-[34px] bg-[#f45f00]" />
+      {/* Section 1~5 wrapper — 좌측 바가 이 영역에만 걸림 (Footer 제외) */}
+      <div className="relative">
+        {/* Left bar — gray track */}
+        <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-[#cfcfcf]" />
+        {/* Left bar — orange fill, 위에서 아래로 채워짐 */}
+        <div
+          className="absolute left-0 top-0 w-[2px] bg-[#f45f00] origin-top"
+          style={{ height: "100%", transform: `scaleY(${pageScroll})` }}
+        />
 
       {/* Section 1: Hero */}
       <div className="relative h-[705px] w-[375px] overflow-hidden bg-[#b2b2b2]">
@@ -293,6 +321,10 @@ export default function MobileMain() {
               width: max-content;
               animation: marquee 12s linear infinite;
             }
+            .scroll-hide::-webkit-scrollbar { display: none; }
+            .scroll-hide { -ms-overflow-style: none; scrollbar-width: none; }
+            html, body { scrollbar-width: none; -ms-overflow-style: none; }
+            html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
           `}</style>
           <div className="marquee-track">
             {[0, 1].map((set) => (
@@ -327,7 +359,7 @@ export default function MobileMain() {
       {/* Card1(622px) + Card2 top 197px → 전체 721px */}
       <div
         ref={section4Ref}
-        className="relative w-[375px] -mt-[40px] z-10 overflow-hidden bg-white"
+        className="relative w-[375px] -mt-[40px] z-10 overflow-hidden"
         style={{ height: "721px" }}
       >
         {/* Card 1: 로봇 SI 솔루션 — 60% 아래에서 은은하게 슬라이드 */}
@@ -402,7 +434,7 @@ export default function MobileMain() {
         </p>
 
         {/* Horizontal scroll cards */}
-        <div className="flex gap-[16px] mt-[40px] overflow-x-auto pb-[4px] -mx-[20px] px-[20px]">
+        <div ref={solScrollRef} className="scroll-hide flex gap-[16px] mt-[40px] overflow-x-auto -mx-[20px] px-[20px]">
 
           {/* Card: 자동차 산업 솔루션 */}
           <div className="relative shrink-0 h-[421px] w-[300px] overflow-hidden">
@@ -425,7 +457,7 @@ export default function MobileMain() {
               <div className="flex items-center justify-between mb-[14px]">
                 <p className="font-['Pretendard',sans-serif] font-bold leading-[24px] text-[19px] text-white whitespace-nowrap">자동차 산업 솔루션</p>
                 {/* 카드 활성화 시 색상 전환 */}
-                <div className="overflow-clip size-[24px]">
+                <div className="relative overflow-clip size-[24px]">
                   <div className="absolute inset-[9.38%]">
                     <img alt="" className="absolute block max-w-none size-full" src={imgSubtract} />
                   </div>
@@ -458,7 +490,7 @@ export default function MobileMain() {
               <div className="flex items-center justify-between mb-[14px]">
                 <p className="font-['Pretendard',sans-serif] font-bold leading-[24px] text-[19px] text-white whitespace-nowrap">화장품 산업 솔루션</p>
                 {/* 카드 활성화 시 색상 전환 */}
-                <div className="overflow-clip size-[24px]">
+                <div className="relative overflow-clip size-[24px]">
                   <div className="absolute inset-[9.38%]">
                     <img alt="" className="absolute block max-w-none size-full" src={imgSubtract1} />
                   </div>
@@ -474,7 +506,19 @@ export default function MobileMain() {
             </div>
           </div>
         </div>
+
+        {/* 스크롤 progress bar */}
+        <div className="mt-[20px] h-[2px] w-full bg-[#e0e0e0] rounded-full overflow-hidden">
+          <div
+            className="h-full bg-[#f45f00] rounded-full"
+            style={{
+              width: `${solProgress * 100}%`,
+              transition: "width 0.1s ease",
+            }}
+          />
+        </div>
       </div>
+      </div> {/* /content wrapper */}
 
       <Footer />
     </div>
