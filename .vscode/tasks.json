@@ -1,0 +1,42 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "🚀 dev server 시작",
+      "type": "shell",
+      "command": "npm run dev",
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "🗂 프로젝트 허브 열기",
+      "type": "shell",
+      "command": "open http://localhost:3000/projects",
+      "dependsOn": "🚀 dev server 시작",
+      "presentation": {
+        "reveal": "silent"
+      }
+    },
+    {
+      "label": "📱 Robotegra 랜딩 열기",
+      "type": "shell",
+      "command": "open http://localhost:3000/landing",
+      "presentation": {
+        "reveal": "silent"
+      }
+    },
+    {
+      "label": "⚡ 이문아이파크 전력제어 열기",
+      "type": "shell",
+      "command": "open http://localhost:3000/dashboard",
+      "presentation": {
+        "reveal": "silent"
+      }
+    }
+  ]
+}
