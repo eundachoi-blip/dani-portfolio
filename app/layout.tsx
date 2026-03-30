@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "./providers/theme-provider";
+import { EditProvider } from "./providers/edit-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -42,7 +43,9 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col">
         <ThemeProvider>
-          {children}
+          <EditProvider>
+            {children}
+          </EditProvider>
         </ThemeProvider>
         {/* eslint-disable-next-line @next/next/no-sync-scripts */}
         <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>

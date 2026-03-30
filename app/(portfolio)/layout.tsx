@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation"
 import { Switch } from "@headlessui/react"
 import { SunIcon, MoonIcon } from "@heroicons/react/20/solid"
 import { useTheme } from "../providers/theme-provider"
+import { LockButton, EditToolbar } from "@/components/edit/edit-ui"
 
 const navItems = [
   { label: "Home", href: "/" },
@@ -86,6 +87,8 @@ export default function PortfolioLayout({ children }: { children: React.ReactNod
               )
             })}
             <ThemeToggle />
+            {/* 편집 자물쇠 버튼 */}
+            <LockButton />
           </div>
         </nav>
       </header>
@@ -93,6 +96,9 @@ export default function PortfolioLayout({ children }: { children: React.ReactNod
       <main className="pt-14">
         {children}
       </main>
+
+      {/* 편집 모드 하단 툴바 */}
+      <EditToolbar />
     </div>
   )
 }

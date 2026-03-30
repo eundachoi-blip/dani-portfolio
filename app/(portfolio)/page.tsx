@@ -1,53 +1,58 @@
-import Link from "next/link"
+"use client"
 
-const skills = ["AI", "UX", "Interaction", "Design System Manager"]
+import Link from "next/link"
+import { useEdit } from "@/app/providers/edit-provider"
+import { EditableText } from "@/components/edit/editable-text"
+import { EditableSkills } from "@/components/edit/editable-skills"
 
 export default function Home() {
+  const { draft, updateDraft } = useEdit()
+
   return (
     <div className="flex min-h-[calc(100vh-56px)] flex-col">
 
       {/* Hero */}
       <section className="flex flex-1 flex-col justify-center px-6 py-20 mx-auto w-full max-w-5xl">
 
-        <p
+        <EditableText
+          as="p"
+          value={draft.hero.role}
+          onChange={(v) =>
+            updateDraft((d) => ({ ...d, hero: { ...d.hero, role: v } }))
+          }
           className="mb-6 text-xs font-medium uppercase tracking-widest"
           style={{ color: "var(--fg-subtle)" }}
-        >
-          Designer
-        </p>
+        />
 
-        <h1
+        <EditableText
+          as="h1"
+          value={draft.hero.name}
+          onChange={(v) =>
+            updateDraft((d) => ({ ...d, hero: { ...d.hero, name: v } }))
+          }
           className="mb-10 font-extrabold leading-[0.93] tracking-[-0.04em]"
           style={{
             fontSize: "clamp(64px, 10vw, 120px)",
             color: "var(--fg)",
           }}
-        >
-          Dani
-        </h1>
+        />
 
-        <p
+        <EditableText
+          as="p"
+          value={draft.hero.bio}
+          onChange={(v) =>
+            updateDraft((d) => ({ ...d, hero: { ...d.hero, bio: v } }))
+          }
+          multiline
           className="mb-12 max-w-sm text-base leading-relaxed"
           style={{ color: "var(--fg-muted)" }}
-        >
-          AI와 인터랙션을 접점으로 사람 중심의 경험을 설계합니다.
-        </p>
+        />
 
         {/* Skills */}
-        <div className="mb-16 flex flex-wrap gap-1.5">
-          {skills.map((skill) => (
-            <span
-              key={skill}
-              className="rounded-full px-4 py-1.5 text-xs tracking-wide transition-colors duration-200"
-              style={{
-                border: "1px solid var(--border)",
-                color: "var(--fg-muted)",
-              }}
-            >
-              {skill}
-            </span>
-          ))}
-        </div>
+        <EditableSkills
+          skills={draft.skills}
+          onChange={(s) => updateDraft((d) => ({ ...d, skills: s }))}
+        />
 
         {/* CTA */}
         <div className="flex items-center gap-5">
@@ -77,10 +82,24 @@ export default function Home() {
         style={{ borderTop: "1px solid var(--border-muted)" }}
       >
         <div className="mx-auto flex max-w-5xl items-center justify-between">
-          <span className="text-xs" style={{ color: "var(--fg-subtle)" }}>© 2026 Dani</span>
-          <span className="text-xs" style={{ color: "var(--fg-subtle)" }}>
-            Designer · AI · UX · Interaction · Design System
-          </span>
+          <EditableText
+            as="span"
+            value={draft.footer.copyright}
+            onChange={(v) =>
+              updateDraft((d) => ({ ...d, footer: { ...d.footer, copyright: v } }))
+            }
+            className="text-xs"
+            style={{ color: "var(--fg-subtle)" }}
+          />
+          <EditableText
+            as="span"
+            value={draft.footer.tagline}
+            onChange={(v) =>
+              updateDraft((d) => ({ ...d, footer: { ...d.footer, tagline: v } }))
+            }
+            className="text-xs"
+            style={{ color: "var(--fg-subtle)" }}
+          />
         </div>
       </footer>
     </div>
