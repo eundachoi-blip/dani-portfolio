@@ -2,7 +2,10 @@ import { NextResponse } from "next/server"
 
 export async function POST(req: Request) {
   const { password } = await req.json()
-  const correct = process.env.EDIT_PASSWORD || "dani2026"
+  const correct = process.env.EDIT_PASSWORD
+  if (!correct) {
+    return NextResponse.json({ error: "Server misconfigured" }, { status: 500 })
+  }
 
   if (password === correct) {
     return NextResponse.json({ ok: true })

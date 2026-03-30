@@ -1,34 +1,47 @@
-const posts = [
-  {
-    id: 1,
-    date: "2026.03.27",
-    title: "오렌지 후드 입고 질주",
-    content: "오렌지 옷 입고 달려오는 삼식이. 귀가 펄럭이고 입이 활짝 열렸다. 행복이 뭔지 몸으로 보여주는 녀석.",
-    image: "/samsik/samsik-run.jpeg",
-    video: null,
-    tags: ["산책", "질주"],
-  },
-  {
-    id: 2,
-    date: "2026.03.27",
-    title: "사무실 삼식",
-    content: "목줄에 이름표 달고 사무실에서 진지한 표정으로 앉아있는 삼식이. 뒤에 걸린 클림트 그림이랑 왠지 잘 어울린다.",
-    image: "/samsik/samsik-portrait.jpeg",
-    video: null,
-    tags: ["일상", "사무실"],
-  },
-  {
-    id: 3,
-    date: "2026.03.27",
-    title: "간식 주세요",
-    content: "눈빛으로 다 말하는 삼식이. 말은 못 해도 의사 표현은 누구보다 확실하다.",
-    image: null,
-    video: "/samsik/samsik-video.mp4",
-    tags: ["영상"],
-  },
-]
+"use client"
+
+import { useEdit } from "@/app/providers/edit-provider"
+import { EditableText } from "@/components/edit/editable-text"
+import { PlusIcon, XMarkIcon } from "@heroicons/react/20/solid"
+import type { SamsikPost } from "@/lib/content"
 
 export default function SamsikPage() {
+  const { draft, updateDraft, isEditMode } = useEdit()
+  const posts = draft.samsik
+
+  const updatePost = (id: number, patch: Partial<SamsikPost>) => {
+    updateDraft((d) => ({
+      ...d,
+      samsik: d.samsik.map((p) => (p.id === id ? { ...p, ...patch } : p)),
+    }))
+  }
+
+  const addPost = () => {
+    const id = Date.now()
+    updateDraft((d) => ({
+      ...d,
+      samsik: [
+        {
+          id,
+          date: new Date().toLocaleDateString("ko-KR", { year: "numeric", month: "2-digit", day: "2-digit" }).replace(/\. /g, ".").replace(".", ".").slice(0, 10),
+          title: "새 기록",
+          content: "내용을 입력하세요",
+          image: null,
+          video: null,
+          tags: [],
+        },
+        ...d.samsik,
+      ],
+    }))
+  }
+
+  const removePost = (id: number) => {
+    updateDraft((d) => ({
+      ...d,
+      samsik: d.samsik.filter((p) => p.id !== id),
+    }))
+  }
+
   return (
     <div className="mx-auto max-w-2xl px-6 py-16">
 
@@ -45,19 +58,54 @@ export default function SamsikPage() {
         </p>
       </div>
 
+      {/* 편집 모드: 글 추가 버튼 */}
+      {isEditMode && (
+        <button
+          onClick={addPost}
+          className="mb-10 flex w-full items-center justify-center gap-2 rounded-xl py-3 text-sm font-medium transition-opacity hover:opacity-70"
+          style={{
+            border: "1px dashed var(--border)",
+            color: "var(--fg-subtle)",
+          }}
+        >
+          <PlusIcon className="size-4" />
+          새 기록 추가
+        </button>
+      )}
+
       {/* 포스트 목록 */}
       <div className="flex flex-col gap-14">
         {posts.map((post) => (
           <article
             key={post.id}
-            className="pt-8 transition-colors duration-200"
+            className="relative pt-8 transition-colors duration-200"
             style={{ borderTop: "1px solid var(--border)" }}
           >
+            {/* 편집 모드: 삭제 버튼 */}
+            {isEditMode && (
+              <button
+                onClick={() => removePost(post.id)}
+                className="absolute right-0 top-3 rounded-full p-1 transition-opacity hover:opacity-70"
+                style={{
+                  backgroundColor: "var(--surface)",
+                  border: "1px solid var(--border)",
+                  color: "var(--fg-subtle)",
+                }}
+                aria-label="기록 삭제"
+              >
+                <XMarkIcon className="size-3.5" />
+              </button>
+            )}
+
             {/* 날짜 + 태그 */}
             <div className="mb-4 flex items-center gap-3">
-              <span className="text-xs" style={{ color: "var(--fg-subtle)" }}>
-                {post.date}
-              </span>
+              <EditableText
+                as="span"
+                value={post.date}
+                onChange={(v) => updatePost(post.id, { date: v })}
+                className="text-xs"
+                style={{ color: "var(--fg-subtle)" }}
+              />
               {post.tags.map((tag) => (
                 <span
                   key={tag}
@@ -73,9 +121,13 @@ export default function SamsikPage() {
             </div>
 
             {/* 제목 */}
-            <h2 className="mb-5 text-lg font-bold tracking-tight" style={{ color: "var(--fg)" }}>
-              {post.title}
-            </h2>
+            <EditableText
+              as="h2"
+              value={post.title}
+              onChange={(v) => updatePost(post.id, { title: v })}
+              className="mb-5 text-lg font-bold tracking-tight"
+              style={{ color: "var(--fg)" }}
+            />
 
             {/* 이미지 */}
             {post.image && (
@@ -95,9 +147,14 @@ export default function SamsikPage() {
             )}
 
             {/* 본문 */}
-            <p className="text-sm leading-loose" style={{ color: "var(--fg-muted)" }}>
-              {post.content}
-            </p>
+            <EditableText
+              as="p"
+              value={post.content}
+              onChange={(v) => updatePost(post.id, { content: v })}
+              multiline
+              className="text-sm leading-loose"
+              style={{ color: "var(--fg-muted)" }}
+            />
           </article>
         ))}
       </div>

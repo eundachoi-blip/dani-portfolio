@@ -34,7 +34,10 @@ export async function GET() {
 
 export async function PUT(req: Request) {
   const auth = req.headers.get("Authorization")?.replace("Bearer ", "")
-  const editPw = process.env.EDIT_PASSWORD || "dani2026"
+  const editPw = process.env.EDIT_PASSWORD
+  if (!editPw) {
+    return NextResponse.json({ error: "Server misconfigured" }, { status: 500 })
+  }
 
   if (auth !== editPw) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
