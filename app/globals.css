@@ -5,23 +5,23 @@
   --font-mono: var(--font-geist-mono);
 }
 
-/* ── Light theme ── */
+/* ── Light theme (Claude warm) ── */
 :root,
 [data-theme="light"] {
-  --bg:           #ffffff;
-  --fg:           #111111;
-  --fg-muted:     #71717a;
-  --fg-subtle:    #a1a1aa;
-  --border:       #d4d4d8;   /* zinc-300 — 라이트에서 충분히 보이는 선 */
-  --border-muted: #e4e4e7;   /* zinc-200 */
-  --surface:      #f4f4f5;   /* zinc-100 */
-  --surface-2:    #ffffff;
-  --nav-bg:       rgba(255, 255, 255, 0.88);
-  --btn-bg:       #18181b;
+  --bg:           #faf9f7;
+  --fg:           #141210;
+  --fg-muted:     #6b6860;
+  --fg-subtle:    #9b9890;
+  --border:       #ddd9d3;
+  --border-muted: #e8e4de;
+  --surface:      #f0ede7;
+  --surface-2:    #faf9f7;
+  --nav-bg:       rgba(250, 249, 247, 0.88);
+  --btn-bg:       #2aab8c;
   --btn-fg:       #ffffff;
-  --toggle-track: #d4d4d8;
-  --sun-color:    #f59e0b;
-  --moon-color:   #a1a1aa;
+  --toggle-track: #c9c5be;
+  --sun-color:    #d97706;
+  --moon-color:   #9b9890;
 }
 
 /* ── Dark theme ── */
@@ -35,8 +35,8 @@
   --surface:      #18181b;
   --surface-2:    #09090b;
   --nav-bg:       rgba(9, 9, 11, 0.88);
-  --btn-bg:       #fafafa;
-  --btn-fg:       #18181b;
+  --btn-bg:       #2aab8c;
+  --btn-fg:       #ffffff;
   --toggle-track: #52525b;
   --sun-color:    #71717a;
   --moon-color:   #d4d4d8;

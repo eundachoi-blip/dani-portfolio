@@ -2,7 +2,6 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Switch } from "@headlessui/react"
 import { SunIcon, MoonIcon } from "@heroicons/react/20/solid"
 import { useTheme } from "../providers/theme-provider"
 import { LockButton, EditToolbar } from "@/components/edit/edit-ui"
@@ -20,26 +19,32 @@ function ThemeToggle() {
   return (
     <div className="flex items-center gap-2">
       <SunIcon
-        className="size-4 transition-colors duration-200"
+        className="size-4"
         style={{ color: "var(--sun-color)", opacity: isDark ? 0.5 : 1 }}
       />
-      <Switch
-        checked={isDark}
-        onChange={() => toggle()}
+      <button
+        type="button"
+        role="switch"
+        aria-checked={isDark}
         aria-label="테마 전환"
-        className="relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
+        onClick={toggle}
+        className="relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent focus:outline-none"
         style={{
-          backgroundColor: "var(--toggle-track)",
+          backgroundColor: isDark ? "#2aab8c" : "var(--toggle-track)",
+          transition: "background-color 0.2s ease",
         }}
       >
         <span
           aria-hidden="true"
-          className="pointer-events-none inline-block size-4 rounded-full bg-white shadow-sm ring-0 transition-transform duration-200"
-          style={{ transform: isDark ? "translateX(16px)" : "translateX(0px)" }}
+          className="pointer-events-none inline-block size-4 rounded-full bg-white shadow-sm"
+          style={{
+            transform: isDark ? "translateX(16px)" : "translateX(0px)",
+            transition: "transform 0.2s ease",
+          }}
         />
-      </Switch>
+      </button>
       <MoonIcon
-        className="size-4 transition-colors duration-200"
+        className="size-4"
         style={{ color: "var(--moon-color)", opacity: isDark ? 1 : 0.4 }}
       />
     </div>
@@ -78,7 +83,7 @@ export default function PortfolioLayout({ children }: { children: React.ReactNod
                   href={item.href}
                   className="text-sm transition-colors duration-150"
                   style={{
-                    color: active ? "var(--fg)" : "var(--fg-subtle)",
+                    color: active ? "#2aab8c" : "var(--fg-subtle)",
                     fontWeight: active ? 600 : 400,
                   }}
                 >
