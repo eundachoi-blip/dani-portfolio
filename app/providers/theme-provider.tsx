@@ -15,22 +15,32 @@ const ThemeContext = createContext<ThemeContextValue>({
 })
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  // suppressHydrationWarning: 서버/클라이언트 초기값 불일치 억제
   const [theme, setTheme] = useState<Theme>("dark")
+  const [mounted, setMounted] = useState(false)
 
-  // 마운트 시 localStorage 값 적용
   useEffect(() => {
     const saved = localStorage.getItem("theme") as Theme | null
     const initial = saved === "light" || saved === "dark" ? saved : "dark"
     setTheme(initial)
     document.documentElement.setAttribute("data-theme", initial)
+    setMounted(true)
   }, [])
 
-  // toggle: 상태 + DOM + localStorage 동시에 업데이트
   const toggle = () => {
     const next = theme === "dark" ? "light" : "dark"
     setTheme(next)
     document.documentElement.setAttribute("data-theme", next)
     localStorage.setItem("theme", next)
+  }
+
+  // 마운트 전엔 children을 그대로 렌더 (hydration 안전)
+  if (!mounted) {
+    return (
+      <ThemeContext.Provider value={{ theme: "dark", toggle }}>
+        {children}
+      </ThemeContext.Provider>
+    )
   }
 
   return (

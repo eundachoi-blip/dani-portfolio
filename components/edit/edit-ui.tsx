@@ -1,7 +1,6 @@
 "use client"
 
-import { useState } from "react"
-import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react"
+import { useState, useEffect } from "react"
 import {
   PencilSquareIcon,
   LockClosedIcon,
@@ -13,7 +12,7 @@ import {
 import { useEdit } from "@/app/providers/edit-provider"
 
 /* ─────────────────────────────────────────────
-   GnB 연필 / 편집 중 버튼
+   GnB 연필 버튼
 ───────────────────────────────────────────── */
 export function LockButton() {
   const { isEditMode, exitEditMode } = useEdit()
@@ -23,8 +22,7 @@ export function LockButton() {
     return (
       <button
         onClick={exitEditMode}
-        title="편집 모드 종료"
-        className="flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium transition-all"
+        className="flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium"
         style={{
           backgroundColor: "rgba(239,68,68,0.12)",
           color: "#ef4444",
@@ -41,33 +39,41 @@ export function LockButton() {
     <>
       <button
         onClick={() => setModalOpen(true)}
-        title="편집 모드"
+        aria-label="편집 모드"
         className="rounded-full p-1.5 transition-opacity hover:opacity-70"
         style={{ color: "var(--fg-subtle)" }}
-        aria-label="편집 모드"
       >
         <PencilSquareIcon className="size-4" />
       </button>
 
-      <PasswordModal open={modalOpen} onClose={() => setModalOpen(false)} />
+      {modalOpen && (
+        <PasswordModal onClose={() => setModalOpen(false)} />
+      )}
     </>
   )
 }
 
 /* ─────────────────────────────────────────────
-   비밀번호 모달
+   비밀번호 모달 (Headless UI 없이 직접 구현)
 ───────────────────────────────────────────── */
-function PasswordModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+function PasswordModal({ onClose }: { onClose: () => void }) {
   const { enterEditMode } = useEdit()
   const [pw, setPw] = useState("")
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
 
-  const handleClose = () => {
-    setPw("")
-    setError("")
-    onClose()
-  }
+  // ESC 키로 닫기
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose() }
+    window.addEventListener("keydown", onKey)
+    return () => window.removeEventListener("keydown", onKey)
+  }, [onClose])
+
+  // 모달 열릴 때 스크롤 잠금
+  useEffect(() => {
+    document.body.style.overflow = "hidden"
+    return () => { document.body.style.overflow = "" }
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -76,7 +82,6 @@ function PasswordModal({ open, onClose }: { open: boolean; onClose: () => void }
     const ok = await enterEditMode(pw)
     setLoading(false)
     if (ok) {
-      setPw("")
       onClose()
     } else {
       setError("비밀번호가 틀렸어요")
@@ -85,79 +90,77 @@ function PasswordModal({ open, onClose }: { open: boolean; onClose: () => void }
   }
 
   return (
-    <Dialog open={open} onClose={handleClose} className="relative z-[100]">
-      {/* 배경 오버레이 */}
-      <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" aria-hidden="true" />
-
-      {/* 패널 */}
-      <div className="fixed inset-0 flex items-center justify-center p-4">
-        <DialogPanel
-          className="w-full max-w-sm rounded-2xl p-6 shadow-2xl"
-          style={{
-            backgroundColor: "var(--surface)",
-            border: "1px solid var(--border)",
-          }}
-        >
-          {/* 헤더 */}
-          <div className="mb-5 flex items-center justify-between">
-            <div className="flex items-center gap-2.5">
-              <div
-                className="flex size-8 items-center justify-center rounded-full"
-                style={{ backgroundColor: "var(--surface-2)" }}
-              >
-                <LockClosedIcon className="size-4" style={{ color: "var(--fg-subtle)" }} />
-              </div>
-              <DialogTitle
-                className="text-sm font-semibold"
-                style={{ color: "var(--fg)" }}
-              >
-                편집 모드
-              </DialogTitle>
+    <div
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+      style={{ backgroundColor: "rgba(0,0,0,0.55)" }}
+      onClick={(e) => { if (e.target === e.currentTarget) onClose() }}
+    >
+      <div
+        className="w-full max-w-sm rounded-2xl p-6 shadow-2xl"
+        style={{
+          backgroundColor: "var(--surface)",
+          border: "1px solid var(--border)",
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* 헤더 */}
+        <div className="mb-5 flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <div
+              className="flex size-8 items-center justify-center rounded-full"
+              style={{ backgroundColor: "var(--surface-2)" }}
+            >
+              <LockClosedIcon className="size-4" style={{ color: "var(--fg-subtle)" }} />
             </div>
-            <button
-              onClick={handleClose}
-              className="rounded-full p-1 transition-opacity hover:opacity-60"
-              style={{ color: "var(--fg-subtle)" }}
-            >
-              <XMarkIcon className="size-4" />
-            </button>
+            <p className="text-sm font-semibold" style={{ color: "var(--fg)" }}>
+              편집 모드
+            </p>
           </div>
+          <button
+            onClick={onClose}
+            className="rounded-full p-1 transition-opacity hover:opacity-60"
+            style={{ color: "var(--fg-subtle)" }}
+          >
+            <XMarkIcon className="size-4" />
+          </button>
+        </div>
 
-          {/* 폼 */}
-          <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-            <input
-              type="password"
-              value={pw}
-              onChange={(e) => { setPw(e.target.value); setError("") }}
-              placeholder="비밀번호 입력"
-              autoFocus
-              className="w-full rounded-xl px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-blue-500"
-              style={{
-                backgroundColor: "var(--surface-2)",
-                border: "1px solid var(--border)",
-                color: "var(--fg)",
-              }}
-            />
-            {error && <p className="text-xs text-red-500">{error}</p>}
-            <button
-              type="submit"
-              disabled={loading || !pw}
-              className="flex items-center justify-center gap-2 rounded-xl py-2.5 text-sm font-semibold transition-opacity disabled:opacity-40"
-              style={{
-                backgroundColor: "var(--btn-bg)",
-                color: "var(--btn-fg)",
-              }}
-            >
-              {loading
-                ? <ArrowPathIcon className="size-4 animate-spin" />
-                : <LockOpenIcon className="size-4" />
-              }
-              편집 시작
-            </button>
-          </form>
-        </DialogPanel>
+        {/* 폼 */}
+        <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+          <input
+            type="password"
+            value={pw}
+            onChange={(e) => { setPw(e.target.value); setError("") }}
+            placeholder="비밀번호 입력"
+            autoFocus
+            className="w-full rounded-xl px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+            style={{
+              backgroundColor: "var(--surface-2)",
+              border: "1px solid var(--border)",
+              color: "var(--fg)",
+            }}
+          />
+          {error && (
+            <p className="text-xs text-red-500">{error}</p>
+          )}
+          <button
+            type="submit"
+            disabled={loading || !pw}
+            className="flex items-center justify-center gap-2 rounded-xl py-2.5 text-sm font-semibold transition-opacity disabled:opacity-40"
+            style={{
+              backgroundColor: "var(--btn-bg)",
+              color: "var(--btn-fg)",
+            }}
+          >
+            {loading
+              ? <ArrowPathIcon className="size-4 animate-spin" />
+              : <LockOpenIcon className="size-4" />
+            }
+            편집 시작
+          </button>
+        </form>
       </div>
-    </Dialog>
+    </div>
   )
 }
 
@@ -179,20 +182,10 @@ export function EditToolbar() {
           minWidth: 280,
         }}
       >
-        {/* 상태 */}
-        <div className="flex-1">
-          {isDirty ? (
-            <p className="text-xs" style={{ color: "var(--fg-muted)" }}>
-              저장하지 않은 변경사항
-            </p>
-          ) : (
-            <p className="text-xs" style={{ color: "var(--fg-subtle)" }}>
-              {saveStatus === "saved" ? "저장됨 ✓" : "편집 모드 활성화됨"}
-            </p>
-          )}
+        <div className="flex-1 text-xs" style={{ color: isDirty ? "var(--fg-muted)" : "var(--fg-subtle)" }}>
+          {isDirty ? "저장하지 않은 변경사항" : saveStatus === "saved" ? "저장됨 ✓" : "편집 모드 활성화됨"}
         </div>
 
-        {/* 되돌리기 */}
         {isDirty && (
           <button
             onClick={discard}
@@ -203,7 +196,6 @@ export function EditToolbar() {
           </button>
         )}
 
-        {/* 저장 */}
         <button
           onClick={save}
           disabled={isSaving || !isDirty}
@@ -215,14 +207,11 @@ export function EditToolbar() {
         >
           {isSaving
             ? <ArrowPathIcon className="size-3.5 animate-spin" />
-            : saveStatus === "saved"
-              ? <CheckIcon className="size-3.5" />
-              : null
+            : saveStatus === "saved" ? <CheckIcon className="size-3.5" /> : null
           }
           {isSaving ? "저장 중" : saveStatus === "saved" ? "저장됨" : "저장"}
         </button>
 
-        {/* 종료 */}
         <button
           onClick={exitEditMode}
           className="rounded-full p-1.5 transition-opacity hover:opacity-60"
