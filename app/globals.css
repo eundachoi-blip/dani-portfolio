@@ -1,31 +1,75 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ── Light theme ── */
+:root,
+[data-theme="light"] {
+  --bg:           #ffffff;
+  --fg:           #111111;
+  --fg-muted:     #71717a;
+  --fg-subtle:    #a1a1aa;
+  --border:       #d4d4d8;   /* zinc-300 — 라이트에서 충분히 보이는 선 */
+  --border-muted: #e4e4e7;   /* zinc-200 */
+  --surface:      #f4f4f5;   /* zinc-100 */
+  --surface-2:    #ffffff;
+  --nav-bg:       rgba(255, 255, 255, 0.88);
+  --btn-bg:       #18181b;
+  --btn-fg:       #ffffff;
+  --toggle-track: #d4d4d8;
+  --sun-color:    #f59e0b;
+  --moon-color:   #a1a1aa;
+}
+
+/* ── Dark theme ── */
+[data-theme="dark"] {
+  --bg:           #09090b;
+  --fg:           #fafafa;
+  --fg-muted:     #a1a1aa;   /* 다크에서 muted 더 밝게 */
+  --fg-subtle:    #71717a;
+  --border:       #3f3f46;   /* zinc-700 — 다크에서 충분히 보이는 선 */
+  --border-muted: #27272a;   /* zinc-800 */
+  --surface:      #18181b;
+  --surface-2:    #09090b;
+  --nav-bg:       rgba(9, 9, 11, 0.88);
+  --btn-bg:       #fafafa;
+  --btn-fg:       #18181b;
+  --toggle-track: #52525b;
+  --sun-color:    #71717a;
+  --moon-color:   #d4d4d8;
+}
+
+/* ── 전역 기본 ── */
+html {
+  background-color: var(--bg);
+  color: var(--fg);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--bg);
+  color: var(--fg);
 }
 
-/* 스크롤바 전역 숨김 */
+/* 테마 전환 transition — color 관련 속성만 */
+*,
+*::before,
+*::after {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-duration: 0.2s;
+  transition-timing-function: ease;
+}
+
+/* transition 예외: 이미 transform/opacity 등 쓰는 요소는 개별 처리 */
+button, a, [role="switch"] {
+  transition-property: background-color, border-color, color, opacity, transform;
+  transition-duration: 0.2s;
+  transition-timing-function: ease;
+}
+
+/* 스크롤바 숨김 */
 html, body {
   scrollbar-width: none;
   -ms-overflow-style: none;

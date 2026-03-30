@@ -1,4 +1,3 @@
-
 const projects = [
   {
     name: "Robotegra 랜딩 페이지",
@@ -20,47 +19,62 @@ const projects = [
 
 export default function ProjectsPage() {
   return (
-    <div style={{ fontFamily: "sans-serif", background: "#0f0f0f", color: "#fff", minHeight: "100vh", padding: "40px 32px" }}>
+    <div className="mx-auto max-w-5xl px-6 py-12">
+
       {/* 헤더 */}
-      <div style={{ marginBottom: "40px" }}>
-        <div style={{ fontSize: "12px", color: "#555", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: "8px" }}>
+      <div className="mb-10">
+        <p className="mb-2 text-xs font-medium uppercase tracking-widest" style={{ color: "var(--fg-subtle)" }}>
           dani-robotegra
-        </div>
-        <h1 style={{ fontSize: "28px", fontWeight: "bold", margin: 0 }}>프로젝트 허브</h1>
-        <p style={{ color: "#666", marginTop: "8px", fontSize: "14px" }}>작업 중인 페이지를 한눈에 확인하세요</p>
+        </p>
+        <h1 className="text-2xl font-bold tracking-tight" style={{ color: "var(--fg)" }}>
+          프로젝트 허브
+        </h1>
+        <p className="mt-2 text-sm" style={{ color: "var(--fg-muted)" }}>
+          작업 중인 페이지를 한눈에 확인하세요
+        </p>
       </div>
 
-      {/* 프로젝트 카드 목록 */}
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "16px" }}>
+      {/* 카드 그리드 */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {projects.map((project) => {
           const url = `http://localhost:${project.port}${project.route}`
           return (
             <div
               key={project.route}
+              className="relative overflow-hidden rounded-xl p-6 flex flex-col gap-4 transition-colors duration-200"
               style={{
-                background: "#1a1a1a",
-                border: "1px solid #2a2a2a",
-                borderRadius: "12px",
-                padding: "24px",
-                display: "flex",
-                flexDirection: "column",
-                gap: "16px",
-                position: "relative",
-                overflow: "hidden",
+                backgroundColor: "var(--surface)",
+                border: "1px solid var(--border)",
               }}
             >
               {/* 상단 색상 바 */}
-              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "3px", background: project.color, borderRadius: "12px 12px 0 0" }} />
+              <div
+                className="absolute inset-x-0 top-0 h-0.5"
+                style={{ backgroundColor: project.color }}
+              />
 
               {/* 프로젝트명 */}
-              <div style={{ flex: 1 }}>
-                <div style={{ fontSize: "17px", fontWeight: "bold", marginBottom: "6px" }}>{project.name}</div>
-                <div style={{ fontSize: "13px", color: "#888", lineHeight: "1.5" }}>{project.description}</div>
+              <div className="flex-1">
+                <p className="mb-1.5 font-semibold" style={{ color: "var(--fg)" }}>
+                  {project.name}
+                </p>
+                <p className="text-sm leading-relaxed" style={{ color: "var(--fg-muted)" }}>
+                  {project.description}
+                </p>
               </div>
 
-              {/* URL */}
-              <div style={{ background: "#111", borderRadius: "8px", padding: "10px 14px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: "8px" }}>
-                <code style={{ fontSize: "12px", color: "#aaa", flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+              {/* URL 행 */}
+              <div
+                className="flex items-center justify-between gap-3 rounded-lg px-3.5 py-2.5 transition-colors duration-200"
+                style={{
+                  backgroundColor: "var(--surface-2)",
+                  border: "1px solid var(--border)",
+                }}
+              >
+                <code
+                  className="flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-xs"
+                  style={{ color: "var(--fg-muted)" }}
+                >
                   localhost:{project.port}
                   <span style={{ color: project.color }}>{project.route}</span>
                 </code>
@@ -68,34 +82,22 @@ export default function ProjectsPage() {
                   href={url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{
-                    background: project.color,
-                    color: "#fff",
-                    fontSize: "12px",
-                    fontWeight: "bold",
-                    padding: "4px 12px",
-                    borderRadius: "6px",
-                    textDecoration: "none",
-                    whiteSpace: "nowrap",
-                    flexShrink: 0,
-                  }}
+                  className="shrink-0 rounded-md px-3 py-1 text-xs font-semibold text-white"
+                  style={{ backgroundColor: project.color }}
                 >
                   열기 →
                 </a>
               </div>
 
               {/* 태그 */}
-              <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+              <div className="flex flex-wrap gap-1.5">
                 {project.tags.map((tag) => (
                   <span
                     key={tag}
+                    className="rounded-full px-2.5 py-0.5 text-[11px] transition-colors duration-200"
                     style={{
-                      background: "#222",
-                      border: "1px solid #333",
-                      color: "#aaa",
-                      fontSize: "11px",
-                      padding: "3px 10px",
-                      borderRadius: "20px",
+                      border: "1px solid var(--border)",
+                      color: "var(--fg-muted)",
                     }}
                   >
                     {tag}
@@ -107,10 +109,14 @@ export default function ProjectsPage() {
         })}
       </div>
 
-      {/* 하단 안내 */}
-      <div style={{ marginTop: "48px", borderTop: "1px solid #222", paddingTop: "24px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <span style={{ fontSize: "13px", color: "#444" }}>총 {projects.length}개 프로젝트</span>
-        <span style={{ fontSize: "13px", color: "#444" }} />
+      {/* 하단 */}
+      <div
+        className="mt-12 pt-6 transition-colors duration-200"
+        style={{ borderTop: "1px solid var(--border-muted)" }}
+      >
+        <span className="text-sm" style={{ color: "var(--fg-muted)" }}>
+          총 {projects.length}개 프로젝트
+        </span>
       </div>
     </div>
   )

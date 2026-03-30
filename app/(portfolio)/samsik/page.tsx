@@ -30,70 +30,72 @@ const posts = [
 
 export default function SamsikPage() {
   return (
-    <div style={{ minHeight: "calc(100vh - 60px)", padding: "60px 40px", maxWidth: "720px", margin: "0 auto" }}>
+    <div className="mx-auto max-w-2xl px-6 py-16">
 
       {/* 헤더 */}
-      <div style={{ marginBottom: "56px" }}>
-        <div style={{ fontSize: "12px", color: "#444", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: "16px" }}>
+      <div className="mb-14">
+        <p className="mb-4 text-xs font-medium uppercase tracking-widest" style={{ color: "var(--fg-subtle)" }}>
           Companion
-        </div>
-        <h1 style={{ fontSize: "40px", fontWeight: "800", letterSpacing: "-0.03em", margin: "0 0 12px 0" }}>
+        </p>
+        <h1 className="mb-3 text-4xl font-extrabold tracking-tight" style={{ color: "var(--fg)" }}>
           SAMSIK
         </h1>
-        <p style={{ fontSize: "14px", color: "#555", margin: 0 }}>
+        <p className="text-sm" style={{ color: "var(--fg-muted)" }}>
           반려동물 삼식이와의 기록
         </p>
       </div>
 
       {/* 포스트 목록 */}
-      <div style={{ display: "flex", flexDirection: "column", gap: "56px" }}>
+      <div className="flex flex-col gap-14">
         {posts.map((post) => (
-          <article key={post.id} style={{ borderTop: "1px solid #1a1a1a", paddingTop: "32px" }}>
-
+          <article
+            key={post.id}
+            className="pt-8 transition-colors duration-200"
+            style={{ borderTop: "1px solid var(--border)" }}
+          >
             {/* 날짜 + 태그 */}
-            <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "16px" }}>
-              <span style={{ fontSize: "12px", color: "#444" }}>{post.date}</span>
+            <div className="mb-4 flex items-center gap-3">
+              <span className="text-xs" style={{ color: "var(--fg-subtle)" }}>
+                {post.date}
+              </span>
               {post.tags.map((tag) => (
-                <span key={tag} style={{
-                  fontSize: "11px", color: "#555",
-                  border: "1px solid #222",
-                  padding: "2px 10px", borderRadius: "100px",
-                }}>
+                <span
+                  key={tag}
+                  className="rounded-full px-2.5 py-0.5 text-[11px] transition-colors duration-200"
+                  style={{
+                    border: "1px solid var(--border)",
+                    color: "var(--fg-muted)",
+                  }}
+                >
                   {tag}
                 </span>
               ))}
             </div>
 
             {/* 제목 */}
-            <h2 style={{ fontSize: "20px", fontWeight: "700", letterSpacing: "-0.02em", margin: "0 0 20px 0" }}>
+            <h2 className="mb-5 text-lg font-bold tracking-tight" style={{ color: "var(--fg)" }}>
               {post.title}
             </h2>
 
             {/* 이미지 */}
             {post.image && (
-              <div style={{ width: "100%", borderRadius: "10px", overflow: "hidden", marginBottom: "20px" }}>
-                <img
-                  src={post.image}
-                  alt={post.title}
-                  style={{ width: "100%", height: "auto", display: "block" }}
-                />
+              <div className="mb-5 overflow-hidden rounded-xl">
+                <img src={post.image} alt={post.title} className="block h-auto w-full" />
               </div>
             )}
 
             {/* 영상 */}
             {post.video && (
-              <div style={{ width: "100%", borderRadius: "10px", overflow: "hidden", marginBottom: "20px", background: "#111" }}>
-                <video
-                  src={post.video}
-                  controls
-                  playsInline
-                  style={{ width: "100%", display: "block" }}
-                />
+              <div
+                className="mb-5 overflow-hidden rounded-xl transition-colors duration-200"
+                style={{ backgroundColor: "var(--surface)" }}
+              >
+                <video src={post.video} controls playsInline className="block w-full" />
               </div>
             )}
 
             {/* 본문 */}
-            <p style={{ fontSize: "15px", color: "#888", lineHeight: "1.8", margin: 0 }}>
+            <p className="text-sm leading-loose" style={{ color: "var(--fg-muted)" }}>
               {post.content}
             </p>
           </article>
