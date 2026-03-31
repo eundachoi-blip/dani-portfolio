@@ -50,7 +50,7 @@ export const DEFAULT_CONTENT: PortfolioContent = {
       name: "Robotegra 랜딩 페이지",
       description: "로보테그라 모바일 메인 랜딩 페이지 (375px, 다크 테마)",
       route: "/landing",
-      tags: ["Mobile", "Landing", "Robotegra"],
+      tags: ["Mobile", "Homepage", "Robotegra"],
       color: "#008000",
       thumbnail: "/thumbnails/landing.png",
     },

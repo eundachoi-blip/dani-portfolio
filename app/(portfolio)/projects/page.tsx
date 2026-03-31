@@ -242,6 +242,7 @@ function ProjectCard({
                 style={{
                   border: "1px solid var(--border)",
                   color: "var(--fg-subtle)",
+                  backgroundColor: "var(--bg)",
                 }}
               >
                 {tag}
