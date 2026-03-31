@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useEdit } from "@/app/providers/edit-provider"
 import { EditableText } from "@/components/edit/editable-text"
 import { PlusIcon, XMarkIcon, PhotoIcon, ArrowTopRightOnSquareIcon } from "@heroicons/react/20/solid"
@@ -114,8 +114,7 @@ function ProjectCard({
   onUpdate: (patch: Partial<Project>) => void
   onRemove: () => void
 }) {
-  const [origin, setOrigin] = useState("")
-  useEffect(() => { setOrigin(window.location.origin) }, [])
+  const origin = "http://localhost:3000"
 
   const [addingTag, setAddingTag] = useState(false)
   const [tagInput, setTagInput] = useState("")
