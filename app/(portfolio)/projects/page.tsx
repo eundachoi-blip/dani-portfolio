@@ -29,7 +29,7 @@ export default function ProjectsPage() {
           description: "프로젝트 설명을 입력하세요",
           route: "/new",
           tags: [],
-          color: "#6366f1",
+          color: "#008000",
           thumbnail: null,
         },
       ],
@@ -44,14 +44,14 @@ export default function ProjectsPage() {
   }
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-12">
+    <div className="mx-auto max-w-5xl px-6 py-16">
 
       {/* 헤더 */}
       <div className="mb-10">
-        <p className="mb-2 text-xs font-medium uppercase tracking-widest" style={{ color: "var(--fg-subtle)" }}>
-          dani-robotegra
+        <p className="mb-2 text-xs font-normal uppercase tracking-widest" style={{ color: "var(--fg-subtle)" }}>
+          Craft
         </p>
-        <h1 className="text-2xl font-bold tracking-tight" style={{ color: "var(--fg)" }}>
+        <h1 className="text-4xl font-bold tracking-tight" style={{ color: "var(--fg)" }}>
           프로젝트 허브
         </h1>
         <p className="mt-2 text-sm" style={{ color: "var(--fg-muted)" }}>
@@ -75,7 +75,7 @@ export default function ProjectsPage() {
         {isEditMode && (
           <button
             onClick={addProject}
-            className="flex items-center justify-center gap-2 rounded-2xl py-10 text-sm font-medium transition-opacity hover:opacity-70"
+            className="flex items-center justify-center gap-2 rounded-2xl py-10 text-sm font-normal transition-opacity hover:opacity-70"
             style={{
               border: "1px dashed var(--border)",
               color: "var(--fg-subtle)",
@@ -174,8 +174,8 @@ function ProjectCard({
             as="h2"
             value={project.name}
             onChange={(v) => onUpdate({ name: v })}
-            className="mb-1 font-semibold text-white"
-            style={{ fontSize: "1rem" }}
+            className="mb-1 font-bold text-white"
+            style={{ fontSize: "20px" }}
           />
           <EditableText
             as="p"
@@ -298,7 +298,7 @@ function ProjectCard({
             href={project.route}
             target="_blank"
             rel="noopener noreferrer"
-            className="shrink-0 flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold text-white transition-opacity hover:opacity-80"
+            className="shrink-0 flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold text-white transition-opacity hover:opacity-80"
             style={{ backgroundColor: project.color }}
           >
             열기
@@ -353,7 +353,7 @@ function ThumbnailEditButton({
           />
           <button
             onClick={commit}
-            className="rounded-lg px-3 py-1.5 text-xs font-semibold text-white shrink-0"
+            className="rounded-lg px-3 py-1.5 text-xs font-bold text-white shrink-0"
             style={{ backgroundColor: color }}
           >
             확인
@@ -371,7 +371,7 @@ function ThumbnailEditButton({
       ) : (
         <button
           onClick={() => { setInputVal(thumbnail ?? ""); setEditing(true) }}
-          className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium text-white transition-opacity hover:opacity-90"
+          className="flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-normal text-white transition-opacity hover:opacity-90"
           style={{ backgroundColor: "rgba(0,0,0,0.55)", backdropFilter: "blur(4px)" }}
         >
           <PhotoIcon className="size-3.5" />

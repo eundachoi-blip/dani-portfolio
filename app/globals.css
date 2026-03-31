@@ -1,8 +1,12 @@
 @import "tailwindcss";
 
 @theme inline {
-  --font-sans: var(--font-geist-sans);
+  --font-sans: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono);
+}
+
+html, body, * {
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
 }
 
 /* ── Light theme (Claude warm) ── */
@@ -17,7 +21,7 @@
   --surface:      #f0ede7;
   --surface-2:    #faf9f7;
   --nav-bg:       rgba(250, 249, 247, 0.88);
-  --btn-bg:       #2aab8c;
+  --btn-bg:       #008000;
   --btn-fg:       #ffffff;
   --toggle-track: #c9c5be;
   --sun-color:    #d97706;
@@ -35,7 +39,7 @@
   --surface:      #18181b;
   --surface-2:    #09090b;
   --nav-bg:       rgba(9, 9, 11, 0.88);
-  --btn-bg:       #2aab8c;
+  --btn-bg:       #008000;
   --btn-fg:       #ffffff;
   --toggle-track: #52525b;
   --sun-color:    #71717a;

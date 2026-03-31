@@ -51,7 +51,7 @@ export const DEFAULT_CONTENT: PortfolioContent = {
       description: "로보테그라 모바일 메인 랜딩 페이지 (375px, 다크 테마)",
       route: "/landing",
       tags: ["Mobile", "Landing", "Robotegra"],
-      color: "#2aab8c",
+      color: "#008000",
       thumbnail: "/thumbnails/landing.png",
     },
     {
@@ -60,7 +60,7 @@ export const DEFAULT_CONTENT: PortfolioContent = {
       description: "VCB/ACB 상태 모니터링, 계통도, 구간별 계측 데이터 대시보드",
       route: "/dashboard",
       tags: ["Dashboard", "전력제어", "모니터링"],
-      color: "#2aab8c",
+      color: "#008000",
       thumbnail: "/thumbnails/dashboard.png",
     },
   ],

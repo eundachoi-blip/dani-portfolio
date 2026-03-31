@@ -47,10 +47,10 @@ export default function SamsikPage() {
 
       {/* 헤더 */}
       <div className="mb-14">
-        <p className="mb-4 text-xs font-medium uppercase tracking-widest" style={{ color: "var(--fg-subtle)" }}>
+        <p className="mb-4 text-xs font-normal uppercase tracking-widest" style={{ color: "var(--fg-subtle)" }}>
           Companion
         </p>
-        <h1 className="mb-3 text-4xl font-extrabold tracking-tight" style={{ color: "var(--fg)" }}>
+        <h1 className="mb-3 text-4xl font-bold tracking-tight" style={{ color: "var(--fg)" }}>
           SAMSIK
         </h1>
         <p className="text-sm" style={{ color: "var(--fg-muted)" }}>
@@ -62,7 +62,7 @@ export default function SamsikPage() {
       {isEditMode && (
         <button
           onClick={addPost}
-          className="mb-10 flex w-full items-center justify-center gap-2 rounded-xl py-3 text-sm font-medium transition-opacity hover:opacity-70"
+          className="mb-10 flex w-full items-center justify-center gap-2 rounded-xl py-3 text-sm font-normal transition-opacity hover:opacity-70"
           style={{
             border: "1px dashed var(--border)",
             color: "var(--fg-subtle)",

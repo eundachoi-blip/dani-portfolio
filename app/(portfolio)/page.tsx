@@ -20,7 +20,7 @@ export default function Home() {
           onChange={(v) =>
             updateDraft((d) => ({ ...d, hero: { ...d.hero, role: v } }))
           }
-          className="mb-6 text-xs font-medium uppercase tracking-widest"
+          className="mb-6 text-xs font-normal uppercase tracking-widest"
           style={{ color: "var(--fg-subtle)" }}
         />
 
@@ -30,7 +30,7 @@ export default function Home() {
           onChange={(v) =>
             updateDraft((d) => ({ ...d, hero: { ...d.hero, name: v } }))
           }
-          className="mb-10 font-extrabold leading-[0.93] tracking-[-0.04em]"
+          className="mb-10 font-bold leading-[0.93] tracking-[-0.04em]"
           style={{
             fontSize: "clamp(64px, 10vw, 120px)",
             color: "var(--fg)",
@@ -58,7 +58,7 @@ export default function Home() {
         <div className="flex items-center gap-5">
           <Link
             href="/projects"
-            className="rounded-full px-7 py-3 text-sm font-semibold transition-opacity hover:opacity-80"
+            className="rounded-full px-7 py-3 text-sm font-bold transition-opacity hover:opacity-80"
             style={{
               backgroundColor: "var(--btn-bg)",
               color: "var(--btn-fg)",

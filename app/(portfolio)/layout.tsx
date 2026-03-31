@@ -8,6 +8,7 @@ import { LockButton, EditToolbar } from "@/components/edit/edit-ui"
 
 const navItems = [
   { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
   { label: "Project Hub", href: "/projects" },
   { label: "SAMSIK", href: "/samsik" },
 ]
@@ -30,7 +31,7 @@ function ThemeToggle() {
         onClick={toggle}
         className="relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent focus:outline-none"
         style={{
-          backgroundColor: isDark ? "#2aab8c" : "var(--toggle-track)",
+          backgroundColor: isDark ? "#008000" : "var(--toggle-track)",
           transition: "background-color 0.2s ease",
         }}
       >
@@ -71,7 +72,7 @@ export default function PortfolioLayout({ children }: { children: React.ReactNod
             className="flex items-center gap-2 transition-opacity hover:opacity-80"
           >
             <img src="/favicon.svg" alt="Dani" className="size-6 rounded-full" />
-            <span className="text-sm font-semibold tracking-tight" style={{ color: "var(--fg)" }}>Dani</span>
+            <span className="text-sm font-bold tracking-tight" style={{ color: "var(--fg)" }}>Dani</span>
           </Link>
 
           <div className="flex items-center gap-6">
@@ -83,7 +84,7 @@ export default function PortfolioLayout({ children }: { children: React.ReactNod
                   href={item.href}
                   className="text-sm transition-colors duration-150"
                   style={{
-                    color: active ? "#2aab8c" : "var(--fg-subtle)",
+                    color: active ? "#008000" : "var(--fg-subtle)",
                     fontWeight: active ? 600 : 400,
                   }}
                 >
