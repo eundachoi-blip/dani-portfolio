@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useEdit } from "@/app/providers/edit-provider"
 import { EditableText } from "@/components/edit/editable-text"
 import { PlusIcon, XMarkIcon, PhotoIcon, ArrowTopRightOnSquareIcon } from "@heroicons/react/20/solid"
@@ -114,7 +114,8 @@ function ProjectCard({
   onUpdate: (patch: Partial<Project>) => void
   onRemove: () => void
 }) {
-  const origin = "http://localhost:3000"
+  const [origin, setOrigin] = useState("")
+  useEffect(() => { setOrigin("http://localhost:3000") }, [])
 
   const [addingTag, setAddingTag] = useState(false)
   const [tagInput, setTagInput] = useState("")
@@ -226,14 +227,14 @@ function ProjectCard({
           className="px-4 py-2.5"
           style={{ borderBottom: "1px solid var(--border-muted)" }}
         >
-          <code className="text-[11px] font-mono" style={{ color: project.color }}>
+          <code className="text-[11px] font-mono" style={{ color: project.color }} suppressHydrationWarning>
             {origin}{project.route}
           </code>
         </div>
 
         {/* 태그 + 열기 — 아래 */}
         <div className="flex items-center justify-between gap-3 px-4 py-2.5">
-          <div className="flex flex-wrap items-center gap-1.5 min-w-0">
+          <div className="flex flex-wrap items-center gap-1.5 min-w-0" suppressHydrationWarning>
             {project.tags.map((tag) => (
               <span
                 key={tag}
@@ -243,6 +244,7 @@ function ProjectCard({
                   color: "var(--fg-subtle)",
                   backgroundColor: "var(--bg)",
                 }}
+                suppressHydrationWarning
               >
                 {tag}
                 {isEditMode && (
@@ -331,9 +333,9 @@ function ThumbnailEditButton({
   }
 
   return (
-    <div className="absolute bottom-12 left-0 right-0 flex items-end px-5 z-10">
+    <div className="absolute left-3 top-3 z-10">
       {editing ? (
-        <div className="flex w-full gap-1.5">
+        <div className="flex gap-1.5">
           <input
             autoFocus
             type="text"
@@ -344,7 +346,7 @@ function ThumbnailEditButton({
               if (e.key === "Escape") setEditing(false)
             }}
             placeholder="이미지 URL 입력"
-            className="flex-1 rounded-lg px-3 py-1.5 text-xs outline-none"
+            className="w-48 rounded-lg px-3 py-1.5 text-xs outline-none"
             style={{
               backgroundColor: "rgba(0,0,0,0.8)",
               color: "#fff",

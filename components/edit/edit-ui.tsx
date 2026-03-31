@@ -22,42 +22,84 @@ export function LockButton() {
   const { isEditMode, exitEditMode } = useEdit()
   const [modalOpen, setModalOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
+  const [showToast, setShowToast] = useState(false)
 
   useEffect(() => setMounted(true), [])
 
-  if (isEditMode) {
-    return (
-      <button
-        onClick={exitEditMode}
-        className="flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium"
-        style={{
-          backgroundColor: "rgba(239,68,68,0.12)",
-          color: "#ef4444",
-          border: "1px solid rgba(239,68,68,0.3)",
-        }}
-      >
-        <LockOpenIcon className="size-3.5" />
-        편집 중
-      </button>
-    )
+  if (mounted && typeof window !== "undefined" && window.location.hostname !== "localhost") {
+    return null
+  }
+
+  const handleExitEdit = () => {
+    exitEditMode()
+    setShowToast(true)
+    setTimeout(() => setShowToast(false), 2000)
   }
 
   return (
     <>
-      <button
-        onClick={() => setModalOpen(true)}
-        aria-label="편집 모드"
-        className="rounded-full p-1.5 transition-opacity hover:opacity-70"
-        style={{ color: "var(--fg-subtle)" }}
-      >
-        <PencilSquareIcon className="size-4" />
-      </button>
+      {isEditMode ? (
+        <button
+          onClick={handleExitEdit}
+          className="flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium"
+          style={{
+            backgroundColor: "rgba(239,68,68,0.12)",
+            color: "#ef4444",
+            border: "1px solid rgba(239,68,68,0.3)",
+          }}
+        >
+          <LockOpenIcon className="size-3.5" />
+          편집 중
+        </button>
+      ) : (
+        <button
+          onClick={() => setModalOpen(true)}
+          aria-label="편집 모드"
+          className="rounded-full p-1.5 transition-opacity hover:opacity-70"
+          style={{ color: "var(--fg-subtle)" }}
+        >
+          <PencilSquareIcon className="size-4" />
+        </button>
+      )}
 
       {mounted && modalOpen && createPortal(
         <PasswordModal onClose={() => setModalOpen(false)} />,
         document.body
       )}
+      {mounted && showToast && createPortal(
+        <Toast />,
+        document.body
+      )}
     </>
+  )
+}
+
+/* ─────────────────────────────────────────────
+   편집 종료 토스트
+───────────────────────────────────────────── */
+function Toast() {
+  return (
+    <div
+      className="fixed left-1/2 z-[200] -translate-x-1/2 -translate-y-1/2 flex items-center gap-3 rounded-2xl shadow-xl"
+      style={{
+        top: "40%",
+        padding: "10px 12px",
+        backgroundColor: "rgba(255,255,255,0.12)",
+        backdropFilter: "blur(20px)",
+        WebkitBackdropFilter: "blur(20px)",
+        border: "1px solid rgba(0,0,0,0.05)",
+        animation: "fadeInDown 0.2s ease",
+      }}
+    >
+      <style>{`
+        @keyframes fadeInDown {
+          from { opacity: 0; transform: translateX(-50%) translateY(-8px); }
+          to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+      `}</style>
+      <LockClosedIcon className="size-4 shrink-0" style={{ color: "#ef4444" }} />
+      <span className="font-normal text-sm" style={{ color: "var(--fg)", lineHeight: 1 }}>편집 종료</span>
+    </div>
   )
 }
 
