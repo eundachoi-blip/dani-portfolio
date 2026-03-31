@@ -33,7 +33,7 @@ export default function AboutPage() {
             <span className="font-bold" style={{ color: "var(--fg)" }}>Claude Code</span>
             로 제작되었습니다. 단순히 툴을 사용한 것이 아니라, 디자이너의 관점으로
             타이포그래피·여백·인터랙션·컬러 시스템까지 직접 개입하며 디테일하게 다듬어 왔습니다.
-            AI가 초안을 만들면, 사용자 경험을 고려한 판단으로 완성합니다.
+            AI가 초안을 만들면, <br></br>사용자 경험을 고려한 판단으로 완성합니다.
           </p>
         </section>
 
@@ -51,9 +51,9 @@ export default function AboutPage() {
           <p className="text-sm leading-relaxed" style={{ color: "var(--fg-muted)" }}>
             저는{" "}
             <span className="font-bold" style={{ color: "var(--fg)" }}>AI를 효율적으로 활용하는 UX 디자이너</span>
-            입니다. 반복적인 작업은 AI에게 위임하고, 사용성·접근성·디테일에 대한 판단은
+            입니다. 반복적인 작업은 AI에게 위임하고, 사용성·접근성·디테일에 <br></br>대한 판단은
             직접 내립니다. 코드를 작성하지 않아도 제품을 만들 수 있는 시대에,
-            디자이너가 어떤 방식으로 주도권을 가져갈 수 있는지를 탐구하고 있습니다.
+            디자이너가 어떤 방식으로 <br></br>주도권을 가져갈 수 있는지를 탐구하고 있습니다.
           </p>
         </section>
 

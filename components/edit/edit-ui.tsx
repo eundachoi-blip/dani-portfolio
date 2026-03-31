@@ -41,7 +41,7 @@ export function LockButton() {
       {isEditMode ? (
         <button
           onClick={handleExitEdit}
-          className="flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium"
+          className="flex w-[88px] items-center justify-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium"
           style={{
             backgroundColor: "rgba(239,68,68,0.12)",
             color: "#ef4444",
@@ -49,16 +49,20 @@ export function LockButton() {
           }}
         >
           <LockOpenIcon className="size-3.5" />
-          편집 중
+          <span className="w-[42px] text-center">편집 중</span>
         </button>
       ) : (
         <button
           onClick={() => setModalOpen(true)}
           aria-label="편집 모드"
-          className="rounded-full p-1.5 transition-opacity hover:opacity-70"
-          style={{ color: "var(--fg-subtle)" }}
+          className="flex w-[88px] items-center justify-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium transition-opacity hover:opacity-70"
+          style={{
+            color: "var(--fg-subtle)",
+            border: "1px solid var(--border)",
+          }}
         >
-          <PencilSquareIcon className="size-4" />
+          <PencilSquareIcon className="size-3.5" />
+          <span className="w-[42px] text-center">편집하기</span>
         </button>
       )}
 
@@ -84,7 +88,7 @@ function Toast() {
       style={{
         top: "40%",
         padding: "10px 12px",
-        backgroundColor: "rgba(255,255,255,0.12)",
+        backgroundColor: "rgba(250,249,247,0.2)",
         backdropFilter: "blur(20px)",
         WebkitBackdropFilter: "blur(20px)",
         border: "1px solid rgba(0,0,0,0.05)",
