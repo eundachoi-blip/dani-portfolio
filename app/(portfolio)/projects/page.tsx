@@ -117,6 +117,9 @@ function ProjectCard({
   const [origin, setOrigin] = useState("")
   useEffect(() => { setOrigin("http://localhost:3000") }, [])
 
+  // route가 이미 절대 URL이면 origin을 앞에 붙이지 않는다 (외부 서비스 카드)
+  const isExternal = /^https?:\/\//.test(project.route)
+
   const [addingTag, setAddingTag] = useState(false)
   const [tagInput, setTagInput] = useState("")
 
@@ -228,7 +231,7 @@ function ProjectCard({
           style={{ borderBottom: "1px solid var(--border-muted)" }}
         >
           <code className="text-[11px] font-mono" style={{ color: project.color }} suppressHydrationWarning>
-            {origin}{project.route}
+            {isExternal ? project.route : `${origin}${project.route}`}
           </code>
         </div>
 

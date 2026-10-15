@@ -63,6 +63,15 @@ export const DEFAULT_CONTENT: PortfolioContent = {
       color: "#008000",
       thumbnail: "/thumbnails/dashboard.png",
     },
+    {
+      id: "together-memo",
+      name: "투게더 메모",
+      description: "가입 없이 링크 하나로 함께 쓰는 실시간 협업 메모",
+      route: "https://togethermemo.com",
+      tags: ["협업", "실시간", "Web"],
+      color: "#008000",
+      thumbnail: null,
+    },
   ],
   samsik: [
     {
