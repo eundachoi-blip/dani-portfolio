@@ -52,7 +52,7 @@ export const DEFAULT_CONTENT: PortfolioContent = {
       route: "https://meogado-dae-next.vercel.app",
       tags: ["반려견", "가이드", "Web"],
       color: "#008000",
-      thumbnail: null,
+      thumbnail: "/thumbnails/meogado-dae.png",
     },
     {
       id: "robotegra-ds",
@@ -61,7 +61,7 @@ export const DEFAULT_CONTENT: PortfolioContent = {
       route: "https://robotegra-ds.vercel.app",
       tags: ["디자인시스템", "가이드", "Robotegra"],
       color: "#008000",
-      thumbnail: null,
+      thumbnail: "/thumbnails/robotegra-ds.png",
     },
     {
       id: "together-memo",
@@ -70,7 +70,7 @@ export const DEFAULT_CONTENT: PortfolioContent = {
       route: "https://togethermemo.com",
       tags: ["협업", "실시간", "Web"],
       color: "#008000",
-      thumbnail: null,
+      thumbnail: "/thumbnails/together-memo.png",
     },
   ],
   samsik: [
